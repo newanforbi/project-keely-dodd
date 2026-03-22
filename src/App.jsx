@@ -1,22 +1,23 @@
 import { useState } from "react";
+import "./App.css";
 
 const SECTIONS = [
   { id: "hierarchy", label: "CDCR Hierarchy", icon: "⬡" },
-  { id: "record", label: "Disputed Record", icon: "◈" },
-  { id: "redress", label: "Avenues of Redress", icon: "◎" },
-  { id: "timeline", label: "Strategic Sequence", icon: "▹" },
+  { id: "record",    label: "Disputed Record", icon: "◈" },
+  { id: "redress",   label: "Avenues of Redress", icon: "◎" },
+  { id: "timeline",  label: "Strategic Sequence", icon: "▹" },
 ];
 
 const hierarchy = [
-  { title: "CDCR Secretary", name: "Jeff Macomber", scope: "Statewide Authority", tier: 0, highlight: false },
-  { title: "Undersecretary of Operations", name: "Jason Johnson", scope: "Operational Divisions", tier: 1, highlight: false },
-  { title: "DAPO Director", name: "Bryan Bishop", scope: "Adult Parole Operations", tier: 2, highlight: false },
-  { title: "DAPO Deputy Director", name: "Heather Bowlds", scope: "Adult Parole Operations", tier: 2, highlight: false },
-  { title: "Asst. Deputy Director, Field Ops", name: "Cory Alvarez", scope: "Field Supervision Mgmt", tier: 3, highlight: false },
-  { title: "Chief Deputy Regional Admin", name: "Marco Cruz / Jaimee Lacey", scope: "Northern Region Oversight", tier: 4, highlight: false },
-  { title: "Parole Administrator", name: "Keely Dodd", scope: "Northern Region Final Review", tier: 5, highlight: true },
-  { title: "Unit Supervisor", name: "Gary Noguchi", scope: "Stockton 2 GPS Unit", tier: 6, highlight: false },
-  { title: "Parole Agent", name: "Long Moua", scope: "Direct Supervision", tier: 7, highlight: false },
+  { title: "CDCR Secretary",                    name: "Jeff Macomber",               scope: "Statewide Authority",            tier: 0, highlight: false },
+  { title: "Undersecretary of Operations",       name: "Jason Johnson",               scope: "Operational Divisions",          tier: 1, highlight: false },
+  { title: "DAPO Director",                      name: "Bryan Bishop",                scope: "Adult Parole Operations",        tier: 2, highlight: false },
+  { title: "DAPO Deputy Director",               name: "Heather Bowlds",              scope: "Adult Parole Operations",        tier: 2, highlight: false },
+  { title: "Asst. Deputy Director, Field Ops",   name: "Cory Alvarez",                scope: "Field Supervision Mgmt",         tier: 3, highlight: false },
+  { title: "Chief Deputy Regional Admin",        name: "Marco Cruz / Jaimee Lacey",   scope: "Northern Region Oversight",      tier: 4, highlight: false },
+  { title: "Parole Administrator",               name: "Keely Dodd",                  scope: "Northern Region Final Review",   tier: 5, highlight: true  },
+  { title: "Unit Supervisor",                    name: "Gary Noguchi",                scope: "Stockton 2 GPS Unit",            tier: 6, highlight: false },
+  { title: "Parole Agent",                       name: "Long Moua",                   scope: "Direct Supervision",             tier: 7, highlight: false },
 ];
 
 const redressAvenues = [
@@ -163,97 +164,36 @@ const unlawfulGrounds = [
 ];
 
 function HierarchyView() {
-  const [hoveredIdx, setHoveredIdx] = useState(null);
   return (
-    <div style={{ padding: "0 8px" }}>
-      <p style={{ color: "#94A3B8", fontSize: 13, lineHeight: 1.6, marginBottom: 28, maxWidth: 680 }}>
-        Keely Dodd's position within the CDCR command structure — several layers below the Secretary, 
-        yet wielding final administrative signatory authority for the Northern Region. Her signature on the 
+    <div className="section-wrap">
+      <p className="section-intro">
+        Keely Dodd's position within the CDCR command structure — several layers below the Secretary,
+        yet wielding final administrative signatory authority for the Northern Region. Her signature on the
         1502-DR transforms field recommendations into enforceable state action.
       </p>
-      <div style={{ position: "relative" }}>
+      <div className="hierarchy-tree">
         {hierarchy.map((h, i) => {
-          const isHovered = hoveredIdx === i;
           const indent = Math.min(h.tier * 18, 144);
           return (
-            <div
-              key={i}
-              onMouseEnter={() => setHoveredIdx(i)}
-              onMouseLeave={() => setHoveredIdx(null)}
-              style={{
-                marginLeft: indent,
-                marginBottom: 2,
-                display: "flex",
-                alignItems: "stretch",
-                transition: "all 0.2s ease",
-              }}
-            >
+            <div key={i} className="hierarchy-node" style={{ marginLeft: indent }}>
               {i > 0 && (
-                <div style={{
-                  width: 2,
-                  background: h.highlight ? "#C45C4A" : "#334155",
-                  marginRight: 12,
-                  flexShrink: 0,
-                  borderRadius: 1,
-                }} />
+                <div className={`hierarchy-connector${h.highlight ? " highlight" : ""}`} />
               )}
-              <div
-                style={{
-                  flex: 1,
-                  padding: "10px 16px",
-                  background: h.highlight
-                    ? (isHovered ? "rgba(196,92,74,0.25)" : "rgba(196,92,74,0.15)")
-                    : (isHovered ? "rgba(148,163,184,0.08)" : "transparent"),
-                  border: h.highlight ? "1px solid rgba(196,92,74,0.5)" : "1px solid transparent",
-                  borderRadius: 6,
-                  cursor: "default",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-                  <span style={{
-                    color: h.highlight ? "#E8A090" : "#CBD5E1",
-                    fontSize: 13,
-                    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                    fontWeight: 600,
-                    letterSpacing: "0.02em",
-                  }}>
-                    {h.title}
-                  </span>
-                  <span style={{
-                    color: h.highlight ? "#F0C4B8" : "#F8FAFC",
-                    fontSize: 14,
-                    fontWeight: 700,
-                  }}>
-                    {h.name}
-                  </span>
+              <div className={`hierarchy-card${h.highlight ? " highlight" : ""}`}>
+                <div className="hierarchy-name-row">
+                  <span className="hierarchy-role">{h.title}</span>
+                  <span className="hierarchy-name">{h.name}</span>
                 </div>
-                <div style={{
-                  color: "#64748B",
-                  fontSize: 11,
-                  marginTop: 2,
-                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                }}>
-                  {h.scope}
-                </div>
+                <div className="hierarchy-scope">{h.scope}</div>
               </div>
             </div>
           );
         })}
       </div>
-      <div style={{
-        marginTop: 28,
-        padding: "14px 18px",
-        background: "rgba(196,92,74,0.08)",
-        border: "1px solid rgba(196,92,74,0.25)",
-        borderRadius: 8,
-        fontSize: 12,
-        color: "#CBD5E1",
-        lineHeight: 1.6,
-      }}>
-        <strong style={{ color: "#E8A090" }}>Key Implication:</strong> Dodd's actions are subordinate to the Assistant Deputy Directors, the DAPO Directorate, and the CDCR Secretary. Accountability mechanisms must leverage horizontal oversight (OIG) or vertical escalation (OOA → Secretary) to bypass regional loyalties.
+      <div className="hierarchy-note">
+        <strong>Key Implication:</strong> Dodd's actions are subordinate to the Assistant Deputy Directors,
+        the DAPO Directorate, and the CDCR Secretary. Accountability mechanisms must leverage horizontal
+        oversight (OIG) or vertical escalation (OOA → Secretary) to bypass regional loyalties.
       </div>
     </div>
   );
@@ -261,153 +201,88 @@ function HierarchyView() {
 
 function RecordView() {
   return (
-    <div style={{ padding: "0 8px" }}>
-      <p style={{ color: "#94A3B8", fontSize: 13, lineHeight: 1.6, marginBottom: 24, maxWidth: 680 }}>
-        The CDCR 1502-DR finalized November 19, 2025 — the specific administrative action triggering 
+    <div className="section-wrap">
+      <p className="section-intro">
+        The CDCR 1502-DR finalized November 19, 2025 — the specific administrative action triggering
         all avenues of redress. Three-tier review chain unanimously recommended retention.
       </p>
 
-      <div style={{
-        background: "rgba(15,23,42,0.6)",
-        border: "1px solid #1E293B",
-        borderRadius: 10,
-        overflow: "hidden",
-        marginBottom: 24,
-      }}>
-        <div style={{
-          padding: "12px 18px",
-          background: "#1E293B",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: 8,
-        }}>
-          <span style={{ color: "#F8FAFC", fontSize: 14, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace" }}>
-            CDCR FORM 1502-DR
-          </span>
-          <span style={{
-            color: "#C45C4A",
-            fontSize: 11,
-            fontWeight: 700,
-            padding: "3px 10px",
-            background: "rgba(196,92,74,0.15)",
-            borderRadius: 4,
-            letterSpacing: "0.08em",
-          }}>
-            DISCHARGE DENIED
-          </span>
+      <div className="record-card">
+        <div className="record-card-header">
+          <span className="record-form-label">CDCR FORM 1502-DR</span>
+          <span className="record-status-badge">DISCHARGE DENIED</span>
         </div>
-
-        <div style={{ padding: "18px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 20 }}>
+        <div className="record-body">
+          <div className="record-meta-grid">
             {[
-              ["Subject", "Brendan N. Newanforbi"],
-              ["CDC Number", "BF3571"],
-              ["CSRA Score", "2 — Below Average Risk"],
-              ["Unit", "Stockton 2 GPS"],
-              ["Review Date", "December 1, 2025"],
-              ["Controlling Discharge", "December 2, 2030"],
-              ["Time Served on Parole", "~4 years of 6.5yr minimum"],
-              ["Treatment Phase", "Core — Block 1 Module 4/7"],
+              ["Subject",                "Brendan N. Newanforbi"],
+              ["CDC Number",             "BF3571"],
+              ["CSRA Score",             "2 — Below Average Risk"],
+              ["Unit",                   "Stockton 2 GPS"],
+              ["Review Date",            "December 1, 2025"],
+              ["Controlling Discharge",  "December 2, 2030"],
+              ["Time Served on Parole",  "~4 years of 6.5yr minimum"],
+              ["Treatment Phase",        "Core — Block 1 Module 4/7"],
             ].map(([k, v], i) => (
               <div key={i}>
-                <div style={{ color: "#64748B", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 3, fontFamily: "'JetBrains Mono', monospace" }}>{k}</div>
-                <div style={{ color: "#E2E8F0", fontSize: 13, fontWeight: 500 }}>{v}</div>
+                <div className="meta-key">{k}</div>
+                <div className="meta-val">{v}</div>
               </div>
             ))}
           </div>
 
-          <div style={{ borderTop: "1px solid #1E293B", paddingTop: 16 }}>
-            <div style={{ color: "#64748B", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12, fontFamily: "'JetBrains Mono', monospace" }}>
-              Three-Tier Review Chain
-            </div>
+          <div className="review-chain">
+            <div className="review-chain-label">Three-Tier Review Chain</div>
             {[
               {
-                role: "Parole Agent",
-                name: "Long Moua",
-                date: "Nov 14, 2025",
+                role:   "Parole Agent",
+                name:   "Long Moua",
+                date:   "Nov 14, 2025",
                 action: "Retain on Parole — Discharge Denied",
                 detail: "Cited multiple violations: missed treatment (Mar 4), PACT referral (Jun 26), GPS charging failures (Jul 15, Aug 18). Ineligible under DAPO Policy 19-03 — 4yr of 6.5yr minimum.",
               },
               {
-                role: "Unit Supervisor",
-                name: "Gary Noguchi",
-                date: "Nov 2025",
+                role:   "Unit Supervisor",
+                name:   "Gary Noguchi",
+                date:   "Nov 2025",
                 action: "Concurred — Retain on Parole",
                 detail: "Noted Stable 6/LSCMI 5 (Level 2 below-average risk). Acknowledged compliance with general supervision. Flagged 6 missed treatment sessions, Core Phase status, relapse prevention plan needed.",
               },
               {
-                role: "Parole Administrator",
-                name: "Keely Dodd (#6462)",
-                date: "Nov 19, 2025",
-                action: "Finalized — Retain on Parole / Discharge Denied",
-                detail: '"Concur with the Unit Supervisor, continued parole supervision is warranted and recommended at this time." Electronic signature transforms recommendation into enforceable state decree.',
+                role:     "Parole Administrator",
+                name:     "Keely Dodd (#6462)",
+                date:     "Nov 19, 2025",
+                action:   "Finalized — Retain on Parole / Discharge Denied",
+                detail:   '"Concur with the Unit Supervisor, continued parole supervision is warranted and recommended at this time." Electronic signature transforms recommendation into enforceable state decree.',
                 isTarget: true,
               },
             ].map((r, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: "12px 16px",
-                  marginBottom: 8,
-                  background: r.isTarget ? "rgba(196,92,74,0.1)" : "rgba(30,41,59,0.5)",
-                  border: r.isTarget ? "1px solid rgba(196,92,74,0.35)" : "1px solid #1E293B",
-                  borderRadius: 8,
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 6, marginBottom: 6 }}>
+              <div key={i} className={`review-item${r.isTarget ? " target" : ""}`}>
+                <div className="review-item-top">
                   <div>
-                    <span style={{ color: r.isTarget ? "#E8A090" : "#94A3B8", fontSize: 11, fontFamily: "'JetBrains Mono', monospace", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                      {r.role}
-                    </span>
-                    <span style={{ color: "#F8FAFC", fontSize: 13, fontWeight: 600, marginLeft: 10 }}>{r.name}</span>
+                    <span className="review-role">{r.role}</span>
+                    <span className="review-name">{r.name}</span>
                   </div>
-                  <span style={{ color: "#64748B", fontSize: 11 }}>{r.date}</span>
+                  <span className="review-date">{r.date}</span>
                 </div>
-                <div style={{ color: r.isTarget ? "#C45C4A" : "#D4A843", fontSize: 12, fontWeight: 600, marginBottom: 4 }}>{r.action}</div>
-                <div style={{ color: "#94A3B8", fontSize: 12, lineHeight: 1.5 }}>{r.detail}</div>
+                <div className="review-action">{r.action}</div>
+                <div className="review-detail">{r.detail}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ color: "#F8FAFC", fontSize: 15, fontWeight: 700, marginBottom: 16, letterSpacing: "-0.01em" }}>
-          Grounds for "Unlawful" Designation
-        </div>
-        {unlawfulGrounds.map((g, i) => (
-          <div
-            key={i}
-            style={{
-              padding: "14px 18px",
-              marginBottom: 8,
-              background: "rgba(15,23,42,0.5)",
-              border: "1px solid #1E293B",
-              borderRadius: 8,
-              borderLeft: `3px solid ${g.severity === "high" ? "#C45C4A" : "#D4A843"}`,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-              <span style={{ color: "#F8FAFC", fontSize: 13, fontWeight: 700 }}>{g.title}</span>
-              <span style={{
-                fontSize: 9,
-                padding: "2px 7px",
-                borderRadius: 3,
-                fontWeight: 700,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: g.severity === "high" ? "#C45C4A" : "#D4A843",
-                background: g.severity === "high" ? "rgba(196,92,74,0.12)" : "rgba(212,168,67,0.12)",
-              }}>
-                {g.severity}
-              </span>
-            </div>
-            <div style={{ color: "#94A3B8", fontSize: 12, lineHeight: 1.6 }}>{g.desc}</div>
+      <div className="grounds-title">Grounds for "Unlawful" Designation</div>
+      {unlawfulGrounds.map((g, i) => (
+        <div key={i} className={`ground-item ${g.severity}`}>
+          <div className="ground-header">
+            <span className="ground-title">{g.title}</span>
+            <span className={`ground-severity ${g.severity}`}>{g.severity}</span>
           </div>
-        ))}
-      </div>
+          <div className="ground-desc">{g.desc}</div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -415,113 +290,54 @@ function RecordView() {
 function RedressView() {
   const [expanded, setExpanded] = useState(null);
   const categories = ["INTERNAL", "INDEPENDENT", "JUDICIAL"];
-  const catColors = { INTERNAL: "#D4A843", INDEPENDENT: "#5A8FA8", JUDICIAL: "#C45C4A" };
-  const catDescs = {
-    INTERNAL: "Mandatory exhaustion required before judicial intervention",
+  const catColors  = { INTERNAL: "#D4A843", INDEPENDENT: "#5A8FA8", JUDICIAL: "#C45C4A" };
+  const catDescs   = {
+    INTERNAL:    "Mandatory exhaustion required before judicial intervention",
     INDEPENDENT: "External oversight bypassing CDCR chain of command",
-    JUDICIAL: "Coercive court powers — activated after exhaustion",
+    JUDICIAL:    "Coercive court powers — activated after exhaustion",
   };
 
   return (
-    <div style={{ padding: "0 8px" }}>
-      <p style={{ color: "#94A3B8", fontSize: 13, lineHeight: 1.6, marginBottom: 24, maxWidth: 680 }}>
-        Eight distinct avenues spanning internal grievance mechanisms, independent state oversight, and 
+    <div className="section-wrap">
+      <p className="section-intro">
+        Eight distinct avenues spanning internal grievance mechanisms, independent state oversight, and
         judicial remedies. Click any avenue to expand the procedural steps.
       </p>
 
       {categories.map((cat) => (
-        <div key={cat} style={{ marginBottom: 28 }}>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
-            <span style={{
-              color: catColors[cat],
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.15em",
-              fontFamily: "'JetBrains Mono', monospace",
-            }}>
-              {cat}
-            </span>
-            <span style={{ color: "#475569", fontSize: 11 }}>{catDescs[cat]}</span>
+        <div key={cat} className="redress-category" style={{ "--cat-color": catColors[cat] }}>
+          <div className="redress-category-header">
+            <span className="redress-category-label">{cat}</span>
+            <span className="redress-category-desc">{catDescs[cat]}</span>
           </div>
-          <div style={{ borderLeft: `2px solid ${catColors[cat]}30`, marginLeft: 4, paddingLeft: 16 }}>
+          <div className="redress-list">
             {redressAvenues.filter((a) => a.category === cat).map((a) => {
               const isOpen = expanded === a.id;
               return (
                 <div
                   key={a.id}
-                  style={{
-                    marginBottom: 8,
-                    background: isOpen ? "rgba(15,23,42,0.7)" : "rgba(15,23,42,0.35)",
-                    border: isOpen ? `1px solid ${a.color}50` : "1px solid #1E293B",
-                    borderRadius: 8,
-                    overflow: "hidden",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                  }}
+                  className={`redress-item${isOpen ? " open" : ""}`}
+                  style={{ "--color": a.color }}
                   onClick={() => setExpanded(isOpen ? null : a.id)}
                 >
-                  <div style={{
-                    padding: "12px 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 8,
-                  }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: a.color,
-                        flexShrink: 0,
-                        boxShadow: `0 0 8px ${a.color}40`,
-                      }} />
-                      <span style={{ color: "#F8FAFC", fontSize: 13, fontWeight: 600 }}>{a.title}</span>
+                  <div className="redress-item-header">
+                    <div className="redress-item-left">
+                      <div className="redress-dot" />
+                      <span className="redress-title">{a.title}</span>
                     </div>
-                    <span style={{
-                      color: "#64748B",
-                      fontSize: 16,
-                      transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
-                      transition: "transform 0.2s ease",
-                      flexShrink: 0,
-                    }}>
-                      ▸
-                    </span>
+                    <span className={`redress-chevron${isOpen ? " open" : ""}`}>▸</span>
                   </div>
 
                   {isOpen && (
-                    <div style={{ padding: "0 16px 16px" }}>
-                      <div style={{
-                        borderTop: `1px solid ${a.color}20`,
-                        paddingTop: 12,
-                      }}>
+                    <div className="redress-body">
+                      <div className="redress-steps">
                         {a.steps.map((s, j) => (
-                          <div key={j} style={{ display: "flex", gap: 10, marginBottom: 8, alignItems: "flex-start" }}>
-                            <span style={{
-                              color: a.color,
-                              fontSize: 10,
-                              fontWeight: 800,
-                              fontFamily: "'JetBrains Mono', monospace",
-                              minWidth: 18,
-                              marginTop: 2,
-                            }}>
-                              {String(j + 1).padStart(2, "0")}
-                            </span>
-                            <span style={{ color: "#CBD5E1", fontSize: 12, lineHeight: 1.6 }}>{s}</span>
+                          <div key={j} className="redress-step">
+                            <span className="redress-step-num">{String(j + 1).padStart(2, "0")}</span>
+                            <span className="redress-step-text">{s}</span>
                           </div>
                         ))}
-                        <div style={{
-                          marginTop: 10,
-                          padding: "8px 12px",
-                          background: `${a.color}10`,
-                          borderRadius: 6,
-                          fontSize: 11,
-                          color: a.color,
-                          fontWeight: 500,
-                          lineHeight: 1.5,
-                        }}>
-                          {a.note}
-                        </div>
+                        <div className="redress-note">{a.note}</div>
                       </div>
                     </div>
                   )}
@@ -538,9 +354,9 @@ function RedressView() {
 function TimelineView() {
   const phases = [
     {
-      phase: "PHASE 1",
-      title: "Administrative Exhaustion",
-      color: "#D4A843",
+      phase:    "PHASE 1",
+      title:    "Administrative Exhaustion",
+      color:    "#D4A843",
       deadline: "30 days from retention notice",
       items: [
         "File CDCR 602-1 + Form 22 contesting 1502-DR",
@@ -552,9 +368,9 @@ function TimelineView() {
       ],
     },
     {
-      phase: "PHASE 2",
-      title: "Misconduct & External Oversight",
-      color: "#C45C4A",
+      phase:    "PHASE 2",
+      title:    "Misconduct & External Oversight",
+      color:    "#C45C4A",
       deadline: "Concurrent with Phase 1",
       items: [
         "If deliberate misconduct alleged → 602-1 triggers CST/OIA referral",
@@ -564,9 +380,9 @@ function TimelineView() {
       ],
     },
     {
-      phase: "PHASE 3",
-      title: "Judicial Intervention",
-      color: "#5A8FA8",
+      phase:    "PHASE 3",
+      title:    "Judicial Intervention",
+      color:    "#5A8FA8",
       deadline: "After OOA exhaustion",
       items: [
         "State Habeas Corpus → San Joaquin County Superior Court",
@@ -576,9 +392,9 @@ function TimelineView() {
       ],
     },
     {
-      phase: "PHASE 4",
-      title: "Legal Advocacy & Systemic Challenge",
-      color: "#7A9A6D",
+      phase:    "PHASE 4",
+      title:    "Legal Advocacy & Systemic Challenge",
+      color:    "#7A9A6D",
       deadline: "Ongoing",
       items: [
         "Engage CRLA (Stockton office) for public interest representation",
@@ -590,73 +406,30 @@ function TimelineView() {
   ];
 
   return (
-    <div style={{ padding: "0 8px" }}>
-      <p style={{ color: "#94A3B8", fontSize: 13, lineHeight: 1.6, marginBottom: 28, maxWidth: 680 }}>
-        The architecture of accountability demands a sequential, strategic, and legally precise approach. 
+    <div className="section-wrap">
+      <p className="section-intro">
+        The architecture of accountability demands a sequential, strategic, and legally precise approach.
         Each phase builds the evidentiary and procedural foundation for the next.
       </p>
 
-      <div style={{ position: "relative" }}>
-        <div style={{
-          position: "absolute",
-          left: 15,
-          top: 0,
-          bottom: 0,
-          width: 2,
-          background: "linear-gradient(to bottom, #D4A843, #C45C4A, #5A8FA8, #7A9A6D)",
-          borderRadius: 1,
-        }} />
-
+      <div className="timeline-track">
+        <div className="timeline-spine" />
         {phases.map((p, i) => (
-          <div key={i} style={{ display: "flex", gap: 20, marginBottom: 28, position: "relative" }}>
-            <div style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              background: "#0F172A",
-              border: `2px solid ${p.color}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              zIndex: 1,
-              boxShadow: `0 0 12px ${p.color}30`,
-            }}>
-              <span style={{ color: p.color, fontSize: 12, fontWeight: 800, fontFamily: "'JetBrains Mono', monospace" }}>
-                {i + 1}
-              </span>
+          <div key={i} className="timeline-entry" style={{ "--color": p.color }}>
+            <div className="timeline-node">
+              <span className="timeline-num">{i + 1}</span>
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap", marginBottom: 4 }}>
-                <span style={{
-                  color: p.color,
-                  fontSize: 10,
-                  fontWeight: 800,
-                  letterSpacing: "0.12em",
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}>
-                  {p.phase}
-                </span>
-                <span style={{ color: "#F8FAFC", fontSize: 14, fontWeight: 700 }}>{p.title}</span>
+            <div className="timeline-entry-body">
+              <div className="timeline-phase-header">
+                <span className="timeline-phase-tag">{p.phase}</span>
+                <span className="timeline-phase-title">{p.title}</span>
               </div>
-              <div style={{
-                color: "#64748B",
-                fontSize: 11,
-                marginBottom: 10,
-                fontFamily: "'JetBrains Mono', monospace",
-              }}>
-                ⏱ {p.deadline}
-              </div>
-              <div style={{
-                background: "rgba(15,23,42,0.5)",
-                border: "1px solid #1E293B",
-                borderRadius: 8,
-                padding: "12px 16px",
-              }}>
+              <div className="timeline-deadline">⏱ {p.deadline}</div>
+              <div className="timeline-items-card">
                 {p.items.map((item, j) => (
-                  <div key={j} style={{ display: "flex", gap: 8, marginBottom: j < p.items.length - 1 ? 6 : 0, alignItems: "flex-start" }}>
-                    <span style={{ color: p.color, fontSize: 11, marginTop: 1, flexShrink: 0 }}>→</span>
-                    <span style={{ color: "#CBD5E1", fontSize: 12, lineHeight: 1.5 }}>{item}</span>
+                  <div key={j} className="timeline-item">
+                    <span className="timeline-arrow">→</span>
+                    <span className="timeline-item-text">{item}</span>
                   </div>
                 ))}
               </div>
@@ -672,115 +445,41 @@ export default function AccountabilityDashboard() {
   const [activeSection, setActiveSection] = useState("hierarchy");
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#0B1120",
-      color: "#F8FAFC",
-      fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
-    }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0B1120; }
-        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 3px; }
-      `}</style>
-
-      {/* Header */}
-      <div style={{
-        padding: "32px 24px 24px",
-        borderBottom: "1px solid #1E293B",
-        background: "linear-gradient(180deg, rgba(196,92,74,0.06) 0%, transparent 100%)",
-      }}>
-        <div style={{
-          color: "#C45C4A",
-          fontSize: 10,
-          fontWeight: 800,
-          letterSpacing: "0.2em",
-          fontFamily: "'JetBrains Mono', monospace",
-          marginBottom: 8,
-        }}>
-          ADMINISTRATIVE ACCOUNTABILITY ANALYSIS
+    <div className="dashboard">
+      <header className="header">
+        <div className="header-eyebrow">ADMINISTRATIVE ACCOUNTABILITY ANALYSIS</div>
+        <h1 className="header-title">Avenues of Redress</h1>
+        <div className="header-meta">
+          <strong>Subject Official:</strong> Keely Dodd, Parole Administrator — CDCR Northern Region
+          <strong className="header-meta-line">
+            <strong>Triggering Action:</strong> Finalization of CDCR 1502-DR • November 19, 2025 • Badge #6462
+          </strong>
         </div>
-        <h1 style={{
-          fontSize: "clamp(22px, 4vw, 34px)",
-          fontWeight: 900,
-          fontFamily: "'Playfair Display', Georgia, serif",
-          letterSpacing: "-0.02em",
-          lineHeight: 1.15,
-          marginBottom: 8,
-          background: "linear-gradient(135deg, #F8FAFC 0%, #94A3B8 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}>
-          Avenues of Redress
-        </h1>
-        <div style={{ color: "#64748B", fontSize: 13, lineHeight: 1.5 }}>
-          <span style={{ color: "#CBD5E1", fontWeight: 600 }}>Subject Official:</span> Keely Dodd, Parole Administrator — CDCR Northern Region
-          <span style={{ display: "block", marginTop: 2 }}>
-            <span style={{ color: "#CBD5E1", fontWeight: 600 }}>Triggering Action:</span> Finalization of CDCR 1502-DR • November 19, 2025 • Badge #6462
-          </span>
-        </div>
-      </div>
+      </header>
 
-      {/* Navigation */}
-      <div style={{
-        display: "flex",
-        gap: 0,
-        borderBottom: "1px solid #1E293B",
-        overflowX: "auto",
-      }}>
-        {SECTIONS.map((s) => {
-          const isActive = activeSection === s.id;
-          return (
-            <button
-              key={s.id}
-              onClick={() => setActiveSection(s.id)}
-              style={{
-                padding: "12px 20px",
-                background: isActive ? "rgba(196,92,74,0.08)" : "transparent",
-                border: "none",
-                borderBottom: isActive ? "2px solid #C45C4A" : "2px solid transparent",
-                color: isActive ? "#F8FAFC" : "#64748B",
-                fontSize: 12,
-                fontWeight: isActive ? 700 : 500,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                fontFamily: "'JetBrains Mono', monospace",
-                letterSpacing: "0.03em",
-                transition: "all 0.2s ease",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              <span style={{ fontSize: 14 }}>{s.icon}</span>
-              {s.label}
-            </button>
-          );
-        })}
-      </div>
+      <nav className="nav">
+        {SECTIONS.map((s) => (
+          <button
+            key={s.id}
+            className={`nav-btn${activeSection === s.id ? " active" : ""}`}
+            onClick={() => setActiveSection(s.id)}
+          >
+            <span className="nav-btn-icon">{s.icon}</span>
+            {s.label}
+          </button>
+        ))}
+      </nav>
 
-      {/* Content */}
-      <div style={{ padding: "24px 16px", maxWidth: 800, margin: "0 auto" }}>
+      <main className="content">
         {activeSection === "hierarchy" && <HierarchyView />}
-        {activeSection === "record" && <RecordView />}
-        {activeSection === "redress" && <RedressView />}
-        {activeSection === "timeline" && <TimelineView />}
-      </div>
+        {activeSection === "record"    && <RecordView />}
+        {activeSection === "redress"   && <RedressView />}
+        {activeSection === "timeline"  && <TimelineView />}
+      </main>
 
-      {/* Footer */}
-      <div style={{
-        padding: "16px 24px",
-        borderTop: "1px solid #1E293B",
-        textAlign: "center",
-        color: "#334155",
-        fontSize: 10,
-        fontFamily: "'JetBrains Mono', monospace",
-        letterSpacing: "0.05em",
-      }}>
+      <footer className="footer">
         ANALYSIS DERIVED FROM CDCR ADMINISTRATIVE RECORDS • DAPO POLICY 19-03 • PC 3000(b)(5)(B) • 42 U.S.C. § 1983
-      </div>
+      </footer>
     </div>
   );
 }
